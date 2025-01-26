@@ -37,48 +37,49 @@ Data Context:
 """
 
 # Streamlit app
+st.set_page_config(layout="wide")  # Use a wide layout
 st.title("Moinfinity Digital Assistant")
 st.write("Welcome! I’m here to assist you with questions about our products, services, shipping, returns, and more!")
 
-# Sidebar for Payment Button
-st.sidebar.title("Payment Options")
-st.sidebar.write("Subscribe to our premium service below:")
+# Create columns for layout
+col1, col2 = st.columns([2, 1])  # Adjust column widths
 
-# HTML and JavaScript for the Stripe payment button
-stripe_button_html = """
-<script async
-  src="https://js.stripe.com/v3/buy-button.js">
-</script>
+with col1:
+    # Chatbox and user input on the left
+    if "chat_history" not in st.session_state:
+        st.session_state.chat_history = []
 
-<stripe-buy-button
-  buy-button-id="buy_btn_1QlO9yHqbUcykh7jNSVhkjST"
-  publishable-key="pk_test_51QlNuNHqbUcykh7jbUjhUwGcw8BZw6XF5phEkiOiCNZhvUJJd7ArVZXzkM3i7cj57BGQcj2H6knBxAPqJt4Ge3ay00kzOzuKqc"
-></stripe-buy-button>
-"""
+    user_question = st.text_input("Ask a question:", key="user_input")
 
-# Render the Stripe button in the sidebar
-components.html(stripe_button_html, height=500)
+    if st.button("Submit"):
+        if user_question:
+            full_prompt = ASSISTANT_PROMPT + f"\n\nUser Question: {user_question}"
+            response = groq_chat.predict(text=full_prompt)
+            st.session_state.chat_history.append({"human": user_question, "AI": response})
 
-# Initialize chat history in session state
-if "chat_history" not in st.session_state:
-    st.session_state.chat_history = []
+    for chat in reversed(st.session_state.chat_history):
+        st.write(f"*You:* {chat['human']}")
+        st.write(f"*Assistant:* {chat['AI']}")
 
-# User input box
-user_question = st.text_input("Ask a question:", key="user_input")
-
-# Submit button to handle user input
-if st.button("Submit"):
-    if user_question:
-        # Combine the prompt with the user input
-        full_prompt = ASSISTANT_PROMPT + f"\n\nUser Question: {user_question}"
-
-        # Get the response from Groq
-        response = groq_chat.predict(text=full_prompt)
-
-        # Save the conversation to session state
-        st.session_state.chat_history.append({"human": user_question, "AI": response})
-
-# Display chat history (latest messages at the top)
-for chat in reversed(st.session_state.chat_history):
-    st.write(f"*You:* {chat['human']}")
-    st.write(f"*Assistant:* {chat['AI']}")
+with col2:
+    # Payment option on the right
+    stripe_button_html = """
+    <style>
+        .stripe-container {
+            text-align: right;  /* Aligns content to the right */
+            padding: 10px;
+        }
+    </style>
+    <div class="stripe-container">
+        <h3>Subscribe Now</h3>
+        <script async
+          src="https://js.stripe.com/v3/buy-button.js">
+        </script>
+        <stripe-buy-button
+          buy-button-id="buy_btn_1QlO9yHqbUcykh7jNSVhkjST"
+          publishable-key="pk_test_51QlNuNHqbUcykh7jbUjhUwGcw8BZw6XF5phEkiOiCNZhvUJJd7ArVZXzkM3i7cj57BGQcj2H6knBxAPqJt4Ge3ay00kzOzuKqc"
+        >
+        </stripe-buy-button>
+    </div>
+    """
+    components.html(stripe_button_html, height=300)
