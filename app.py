@@ -2,6 +2,29 @@ import os
 import streamlit as st
 from langchain_groq import ChatGroq
 
+import streamlit as st
+import streamlit.components.v1 as components
+
+# HTML and JavaScript for the Stripe payment button
+stripe_button_html = """
+<script async
+  src="https://js.stripe.com/v3/buy-button.js">
+</script>
+
+<stripe-buy-button
+  buy-button-id="buy_btn_1QlO9yHqbUcykh7jNSVhkjST"
+  publishable-key="pk_test_51QlNuNHqbUcykh7jbUjhUwGcw8BZw6XF5phEkiOiCNZhvUJJd7ArVZXzkM3i7cj57BGQcj2H6knBxAPqJt4Ge3ay00kzOzuKqc"
+>
+</stripe-buy-button>
+"""
+
+st.title("Stripe Payment Integration")
+
+# Render the Stripe button in the Streamlit app
+components.html(stripe_button_html, height=500)
+
+st.info("Click the Stripe button above to proceed with payment.")
+
 # Load the scraped website content
 with open("moinfinity_content.txt", "r", encoding="utf-8") as file:
     website_content = file.read()
