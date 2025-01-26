@@ -37,6 +37,7 @@ Data Context:
 """
 
 # Streamlit app
+st.set_page_config(layout="wide")  # Set layout to wide
 st.title("Moinfinity Digital Assistant")
 st.write("Welcome! I’m here to assist you with questions about our products, services, shipping, returns, and more!")
 
@@ -64,9 +65,19 @@ for chat in reversed(st.session_state.chat_history):
     st.write(f"**You:** {chat['human']}")
     st.write(f"**Assistant:** {chat['AI']}")
 
-# HTML and JavaScript for the Stripe payment button with CSS for right alignment
+# HTML and JavaScript for the Stripe payment button with fixed CSS
 stripe_button_html = """
-<div style="display: flex; justify-content: flex-end; align-items: center; height: 100%;">
+<style>
+    .fixed-stripe {
+        position: fixed;
+        top: 100px;
+        right: 20px;
+        width: 300px;
+        z-index: 1000;
+    }
+</style>
+<div class="fixed-stripe">
+    <h2>Buy our Monthly Subscription</h2>
     <script async src="https://js.stripe.com/v3/buy-button.js"></script>
     <stripe-buy-button
         buy-button-id="buy_btn_1QlO9yHqbUcykh7jNSVhkjST"
@@ -76,8 +87,5 @@ stripe_button_html = """
 </div>
 """
 
-st.title("Buy our Monthly Subscription")
-
-# Render the Stripe button in the Streamlit app aligned to the right
-components.html(stripe_button_html, height=500)
-
+# Render the Stripe button in the Streamlit app
+components.html(stripe_button_html, height=700)
