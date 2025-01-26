@@ -37,9 +37,24 @@ Data Context:
 """
 
 # Streamlit app
-st.set_page_config(layout="wide")  # Set layout to wide
 st.title("Moinfinity Digital Assistant")
 st.write("Welcome! I’m here to assist you with questions about our products, services, shipping, returns, and more!")
+
+# HTML and JavaScript for the Stripe payment button
+stripe_button_html = """
+<div style="position: fixed; top: 10px; right: 10px; z-index: 1000;">
+    <script async
+      src="https://js.stripe.com/v3/buy-button.js">
+    </script>
+    <stripe-buy-button
+      buy-button-id="buy_btn_1QlO9yHqbUcykh7jNSVhkjST"
+      publishable-key="pk_test_51QlNuNHqbUcykh7jbUjhUwGcw8BZw6XF5phEkiOiCNZhvUJJd7ArVZXzkM3i7cj57BGQcj2H6knBxAPqJt4Ge3ay00kzOzuKqc"
+    ></stripe-buy-button>
+</div>
+"""
+
+# Render the Stripe button in the Streamlit app
+components.html(stripe_button_html, height=100, width=200)
 
 # Initialize chat history in session state
 if "chat_history" not in st.session_state:
@@ -62,30 +77,5 @@ if st.button("Submit"):
 
 # Display chat history (latest messages at the top)
 for chat in reversed(st.session_state.chat_history):
-    st.write(f"**You:** {chat['human']}")
-    st.write(f"**Assistant:** {chat['AI']}")
-
-# HTML and JavaScript for the Stripe payment button with fixed CSS
-stripe_button_html = """
-<style>
-    .fixed-stripe {
-        position: fixed;
-        top: 100px;
-        right: 20px;
-        width: 300px;
-        z-index: 1000;
-    }
-</style>
-<div class="fixed-stripe">
-    <h2>Buy our Monthly Subscription</h2>
-    <script async src="https://js.stripe.com/v3/buy-button.js"></script>
-    <stripe-buy-button
-        buy-button-id="buy_btn_1QlO9yHqbUcykh7jNSVhkjST"
-        publishable-key="pk_test_51QlNuNHqbUcykh7jbUjhUwGcw8BZw6XF5phEkiOiCNZhvUJJd7ArVZXzkM3i7cj57BGQcj2H6knBxAPqJt4Ge3ay00kzOzuKqc"
-    >
-    </stripe-buy-button>
-</div>
-"""
-
-# Render the Stripe button in the Streamlit app
-components.html(stripe_button_html, height=700)
+    st.write(f"*You:* {chat['human']}")
+    st.write(f"*Assistant:* {chat['AI']}")
