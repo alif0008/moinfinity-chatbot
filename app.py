@@ -77,7 +77,7 @@ with col2:
         }
     </style>
     <div class="stripe-container">
-        <h3>Subscribe Now</h3>
+        <h2>SUBSCRIBE NOW</h2>
         <script async
           src="https://js.stripe.com/v3/buy-button.js">
         </script>
