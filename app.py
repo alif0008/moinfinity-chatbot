@@ -76,9 +76,8 @@ stripe_button_html = """
 </div>
 """
 
-st.title("Stripe Payment Integration")
+st.title("Buy our Monthly Subscription")
 
 # Render the Stripe button in the Streamlit app aligned to the right
 components.html(stripe_button_html, height=500)
 
-st.info("Click the Stripe button above to proceed with payment.")
