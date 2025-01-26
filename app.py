@@ -69,6 +69,12 @@ with col2:
             text-align: right;  /* Aligns content to the right */
             padding: 10px;
         }
+        .stripe-container h3 {
+            color: white;       /* Make text white */
+            font-size: 24px;    /* Increase font size */
+            font-weight: bold;  /* Make it bold */
+            margin-bottom: 15px;
+        }
     </style>
     <div class="stripe-container">
         <h3>Subscribe Now</h3>
@@ -83,3 +89,4 @@ with col2:
     </div>
     """
     components.html(stripe_button_html, height=300)
+
