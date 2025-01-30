@@ -2,43 +2,17 @@ import os
 import streamlit as st
 from langchain_groq import ChatGroq
 import streamlit.components.v1 as components
-import streamlit.components.v1 as components
 
-mouse_effect_html = """
-<style>
-    body {
-        cursor: none; /* Hide the default cursor */
-    }
-    .cursor {
-        width: 20px;
-        height: 20px;
-        border-radius: 50%;
-        background-color: rgba(255, 255, 255, 0.5);
-        position: absolute;
-        pointer-events: none;
-        transform: translate(-50%, -50%);
-        transition: transform 0.1s ease-out;
-    }
-</style>
-<div class="cursor" id="cursor"></div>
-<script>
-    document.addEventListener("mousemove", function(event) {
-        var cursor = document.getElementById("cursor");
-        cursor.style.left = event.clientX + "px";
-        cursor.style.top = event.clientY + "px";
-    });
-</script>
-"""
-
-components.html(mouse_effect_html, height=0, width=0)
+# ✅ Must be the first Streamlit command
+st.set_page_config(layout="wide")  # Use a wide layout
 
 # Load the scraped website content
 with open("moinfinity_content.txt", "r", encoding="utf-8") as file:
     website_content = file.read()
 
-# Initializing Groq Chat
+# Initialize Groq Chat
 groq_chat = ChatGroq(
-    groq_api_key=os.environ.get("GROQ_API_KEY"),  # Replace with Groq API key
+    groq_api_key=os.environ.get("GROQ_API_KEY"),  # Replace with your Groq API key
     model_name="llama3-70b-8192"
 )
 
@@ -65,8 +39,7 @@ Data Context:
 {website_content}
 """
 
-# Streamlit app
-st.set_page_config(layout="wide")  # Use a wide layout
+# Streamlit App UI
 st.title("Moinfinity Digital Assistant")
 st.write("Welcome! I’m here to assist you with questions about our products, services, shipping, returns, and more!")
 
@@ -118,3 +91,32 @@ with col2:
     </div>
     """
     components.html(stripe_button_html, height=300)
+
+# ✅ Add Mouse Moving Effect (Cursor Follower)
+mouse_effect_html = """
+<style>
+    body {
+        cursor: none; /* Hide the default cursor */
+    }
+    .cursor {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.5);
+        position: absolute;
+        pointer-events: none;
+        transform: translate(-50%, -50%);
+        transition: transform 0.1s ease-out;
+    }
+</style>
+<div class="cursor" id="cursor"></div>
+<script>
+    document.addEventListener("mousemove", function(event) {
+        var cursor = document.getElementById("cursor");
+        cursor.style.left = event.clientX + "px";
+        cursor.style.top = event.clientY + "px";
+    });
+</script>
+"""
+
+components.html(mouse_effect_html, height=0, width=0)
