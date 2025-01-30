@@ -2,6 +2,35 @@ import os
 import streamlit as st
 from langchain_groq import ChatGroq
 import streamlit.components.v1 as components
+import streamlit.components.v1 as components
+
+mouse_effect_html = """
+<style>
+    body {
+        cursor: none; /* Hide the default cursor */
+    }
+    .cursor {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.5);
+        position: absolute;
+        pointer-events: none;
+        transform: translate(-50%, -50%);
+        transition: transform 0.1s ease-out;
+    }
+</style>
+<div class="cursor" id="cursor"></div>
+<script>
+    document.addEventListener("mousemove", function(event) {
+        var cursor = document.getElementById("cursor");
+        cursor.style.left = event.clientX + "px";
+        cursor.style.top = event.clientY + "px";
+    });
+</script>
+"""
+
+components.html(mouse_effect_html, height=0, width=0)
 
 # Load the scraped website content
 with open("moinfinity_content.txt", "r", encoding="utf-8") as file:
